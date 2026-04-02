@@ -347,6 +347,10 @@ def update_claude_settings(listen_port, auth_token):
     env["ANTHROPIC_BASE_URL"] = new_url
     # Bypass proxy for localhost (argo-shim) while preserving proxy for
     # internet access (web fetches, package installs, etc.)
+    # Clean up stale empty proxy vars from older versions of argo-shim
+    for var in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
+        if var in env and env[var] == "":
+            del env[var]
     for var in ("no_proxy", "NO_PROXY"):
         existing = env.get(var, "")
         hosts = [h.strip() for h in existing.split(",") if h.strip()] if existing else []
