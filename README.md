@@ -197,3 +197,17 @@ unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
 ```
 
 See the [ALCF proxy docs](https://docs.alcf.anl.gov/aurora/getting-started-on-aurora/#proxy) for more details on proxy settings on Aurora login nodes.
+
+## Publishing to PyPI
+
+Publishing is automated via GitHub Actions. To release a new version:
+
+1. Bump the version in `argo_shim/__init__.py`
+2. Commit and tag:
+   ```bash
+   git commit -am "Bump version to X.Y.Z"
+   git tag vX.Y.Z
+   git push && git push --tags
+   ```
+
+The workflow builds with `uv build` and publishes with `uv publish` using [trusted publishing](https://docs.pypi.org/trusted-publishers/) (no API tokens needed — configure the GitHub repo as a trusted publisher on PyPI).
